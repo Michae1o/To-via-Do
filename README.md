@@ -1,73 +1,74 @@
-# React + TypeScript + Vite
+# 待办事项 📝
 
-This template provides a minimal setup to get React working in Vite with HMR and some ESLint rules.
+一款 Windows 桌面待办事项应用，毛玻璃半透明风格，卡片式布局，轻量精致。
 
-Currently, two official plugins are available:
+## 功能一览
 
-- [@vitejs/plugin-react](https://github.com/vitejs/vite-plugin-react/blob/main/packages/plugin-react) uses [Oxc](https://oxc.rs)
-- [@vitejs/plugin-react-swc](https://github.com/vitejs/vite-plugin-react/blob/main/packages/plugin-react-swc) uses [SWC](https://swc.rs/)
+### 待办管理
+- **添加事项**：支持标题、备注、优先级（高/中/低）、截止时间
+- **子事项**：每个事项下可展开添加子任务
+- **拖拽排序**：列表内自由拖拽调整顺序
+- **列表置顶**：重要事项固定在列表顶部
+- **历史归档**：已完成事项自动归入历史区域
 
-## React Compiler
+### 窗口控制
+- **置顶**：窗口始终悬浮在最前
+- **鼠标穿透**：开启后鼠标可穿透窗口操作后方内容，配合 5 分钟空闲自动开启
+- **幽灵模式**：鼠标移出窗口时自动变半透明，移入恢复
+- **边缘吸附**：拖动靠近屏幕边缘时自动对齐
 
-The React Compiler is not enabled on this template because of its impact on dev & build performances. To add it, see [this documentation](https://react.dev/learn/react-compiler/installation).
+### 界面美化
+- **毛玻璃效果**：CSS `backdrop-filter` 实现，可调模糊度
+- **浅色 / 深色主题**：一键切换
+- **自定义背景**：支持选择本地图片作为窗口背景，建议 9:16 竖屏比例
+- **主色调**：六种颜色可选
 
-## Expanding the ESLint configuration
+### 提醒系统
+- 截止时间倒计时显示
+- 到期时弹出 Windows 原生通知
+- 窗口内 Toast 弹窗，6 秒自动消失
 
-If you are developing a production application, we recommend updating the configuration to enable type-aware lint rules:
+### 系统托盘
+- 最小化到系统托盘，不占任务栏
+- 托盘右键菜单：显示/隐藏、切换鼠标穿透、退出
+- 左键单击托盘图标切换窗口显隐
 
-```js
-export default defineConfig([
-  globalIgnores(['dist']),
-  {
-    files: ['**/*.{ts,tsx}'],
-    extends: [
-      // Other configs...
+## 运行要求
 
-      // Remove tseslint.configs.recommended and replace with this
-      tseslint.configs.recommendedTypeChecked,
-      // Alternatively, use this for stricter rules
-      tseslint.configs.strictTypeChecked,
-      // Optionally, add this for stylistic rules
-      tseslint.configs.stylisticTypeChecked,
+- Windows 10（1809+）或 Windows 11
+- 64 位系统
+- WebView2 运行时（Windows 10 1809+ 自带，无需额外安装）
 
-      // Other configs...
-    ],
-    languageOptions: {
-      parserOptions: {
-        project: ['./tsconfig.node.json', './tsconfig.app.json'],
-        tsconfigRootDir: import.meta.dirname,
-      },
-      // other options...
-    },
-  },
-])
+## 使用方式
+
+### 便携版
+下载 `todo-app.exe`，双击运行，即开即用。
+
+### 安装版
+运行 `待办事项_0.1.0_x64-setup.exe`，安装后可创建开始菜单快捷方式和卸载入口。
+
+## 技术栈
+
+| 层 | 技术 |
+|---|---|
+| 桌面框架 | Tauri v2（Rust） |
+| 前端 | React 18 + TypeScript |
+| 样式 | Tailwind CSS |
+| 拖拽 | @dnd-kit |
+| 数据库 | SQLite（tauri-plugin-sql） |
+| 通知 | tauri-plugin-notification |
+
+## 开发
+
+```bash
+# 安装依赖
+npm install
+
+# 开发模式
+npx tauri dev
+
+# 构建
+npx tauri build
 ```
 
-You can also install [eslint-plugin-react-x](https://github.com/Rel1cx/eslint-react/tree/main/packages/plugins/eslint-plugin-react-x) and [eslint-plugin-react-dom](https://github.com/Rel1cx/eslint-react/tree/main/packages/plugins/eslint-plugin-react-dom) for React-specific lint rules:
-
-```js
-// eslint.config.js
-import reactX from 'eslint-plugin-react-x'
-import reactDom from 'eslint-plugin-react-dom'
-
-export default defineConfig([
-  globalIgnores(['dist']),
-  {
-    files: ['**/*.{ts,tsx}'],
-    extends: [
-      // Other configs...
-      // Enable lint rules for React
-      reactX.configs['recommended-typescript'],
-      // Enable lint rules for React DOM
-      reactDom.configs.recommended,
-    ],
-    languageOptions: {
-      parserOptions: {
-        project: ['./tsconfig.node.json', './tsconfig.app.json'],
-        tsconfigRootDir: import.meta.dirname,
-      },
-      // other options...
-    },
-  },
-])
-```
+构建产物位于 `src-tauri/target/release/`。

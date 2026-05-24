@@ -41,14 +41,14 @@ export default function TitleBar({ onSettingsClick, isPinned, onPinChange, isCur
   }, []);
 
   const handleDragStart = (e: React.MouseEvent) => {
-    if (e.target !== e.currentTarget) return;
-    e.preventDefault();
+    const target = e.target as HTMLElement;
+    if (target.closest('button')) return;
     appWindow.startDragging();
   };
 
   return (
-    <div className="titlebar flex items-center justify-between h-12 px-4 shrink-0" style={{ background: 'transparent' }} onMouseDown={handleDragStart}>
-      <div className="flex items-center gap-2">
+    <div className="titlebar titlebar-drag flex items-center justify-between h-12 px-4 shrink-0" style={{ background: 'transparent' }} onMouseDown={handleDragStart}>
+      <div className="flex items-center gap-2 titlebar-no-drag">
         <button
           onClick={handlePin}
           className={`w-8 h-8 flex items-center justify-center rounded-full text-sm transition-colors ${
@@ -85,7 +85,7 @@ export default function TitleBar({ onSettingsClick, isPinned, onPinChange, isCur
         </button>
       </div>
 
-      <div className="flex items-center gap-1">
+      <div className="flex items-center gap-1 titlebar-no-drag">
         <button
           onClick={handleMinimize}
           className="w-8 h-8 flex items-center justify-center rounded-full text-white/60 hover:text-white hover:bg-white/10 transition-colors"
